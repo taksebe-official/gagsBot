@@ -1,0 +1,10 @@
+telegram:
+  api-url: "https://api.telegram.org/"
+  bot-name: "Имя бота"
+  bot-token: "Токен бота"
+  webhook-path: "https://<адрес вебхука>/gags"
+server:
+  port: "5000 (или установите свой для тестирования)"
+message:
+  wtf:
+    text: "Сам не знаю, что случилось, но явно что-то плохое. Почему-то не сработало"

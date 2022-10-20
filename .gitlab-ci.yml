@@ -1,0 +1,34 @@
+stages:
+  - migrate
+  - build
+  - package
+  - deploy
+
+variables:
+  BOT_VERSION: 1.0.0-$CI_COMMIT_SHORT_SHA
+  DOCKER_IMAGE_NAME: taksebetaksebe/gags-tg-bot
+  DOCKER_REGISTRY_USER: taksebetaksebe
+  DOCKER_REGISTRY_PASSWORD: RjhkbcDtkfhbjyYtuh!34
+
+build-gags-telegram-audio-image:
+  stage: package
+  image: docker:19.03.12
+  tags:
+    - tgbots
+  script:
+    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD
+    - docker build --target gags -t $DOCKER_IMAGE_NAME:$BOT_VERSION -f ./deploy/bot/Dockerfile .
+    - docker push $DOCKER_IMAGE_NAME:$BOT_VERSION 
+  only:
+    - master
+
+deploy-test:
+  stage: deploy
+  image: docker:19.03.12
+  tags:
+    - tgbots
+  script:
+    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD
+    - /bin/sh deploy/deploy.sh
+  only:
+    - master
